@@ -1,4 +1,4 @@
-# Movie Website Project - IPND/FSND
+# Movie Website Project
 
 ## Pre-requisites:
   * [Python3](https://www.python.org/)
