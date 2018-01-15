@@ -1,101 +1,27 @@
-# Logs Analysis Project
+# Intro to Programming Nanodegree
+Android Basics courses on Udacity
 
-## Pre-requisites:
-  * [Vagrant](https://www.vagrantup.com/)
-  * [Python3](https://www.python.org/)
-  * [Git BASH](https://git-for-windows.github.io/)
-  * [fullstack-nanodegree-vm](https://github.com/udacity/fullstack-nanodegree-vm)
-  * [newsdata.zip](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
+## Project 1: [Make a Stylish Webpage](https://github.com/benjiehan/intro-to-programming-nanodegree/tree/master/StylishWebpageProject)
+### Use HTML and CSS to create a stylish web page on any topic.
+The web page displays basic information on Ethereum.
 
-## Running the project:
-  1. Install Vagrant & Python3.
-  2. Place [fullstack-nanodegree-vm](https://github.com/udacity/fullstack-nanodegree-vm) into any folder on your local machine (I recommend your home directory for ease of navigation).
-  3. Unzip [newsdata.zip](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip), and place 'newsdata.sql' into the fullstack-nanodegree-vm/vagrant directory.
-  4. The Python script, 'run_queries.py' should also be placed into the fullstack-nanodegree-vm/vagrant directory.
-  
-## Launching the VM:
-  1. Launch Git Bash.
-  2. Navigate to the fullstack-nanodegree-vm/vagrant directory - I placed my folder in the home directory and navigated with 'cd fullstack-nanodegree-vm/vagrant'.
-  3. Launch the VM:
-  
-```
- $ vagrant up
-```
-  4. Log in with:
-  
-```
-$ vagrant ssh
-```
-  3. Go to relevant directory `cd /vagrant` and `ls`. You should have a few files listed here, including 'newsdata.sql'.
-  
-## Downloading the data:
-  1. Load the data in local database using the command:
-  
-```
-psql -d news -f newsdata.sql
-```
-  * Running this command will connect to your installed database server and execute the SQL commands in the downloaded file, creating tables and populating them with data.
-    * `psql` — the PostgreSQL command line program
-    * `-d news` — connect to the database named news which has been set up for you
-    * `-f newsdata.sql` — run the SQL statements in the file `newsdata.sql'
+<img src="http://i.imgur.com/P2A8vBE.png" width="270">
 
-## Creating the views: 
- Input 'psql -d news'. Your prompt should look like this 'news=>'. Copy and paste the paragraphs below one at a time:
- 
-``` 
-create view top_3_articles as
-select title, count(*) as page_views
-from articles join log
-on log.path = concat('/article/', articles.slug)
-where status !='404 NOT FOUND'
-group by articles.title
-order by page_views desc;
-```
+## Project 2: [Code Your Own Quiz](https://github.com/benjiehan/intro-to-programming-nanodegree/tree/master/CodeYourOwnQuizProject)
+### Create a fill-in-the-blanks quiz based on concepts you've learned from the Mad Libs generator.
+This quiz runs in Python and is based off of memes. 
 
-```
-create view top_authors as
-select author, count(*) as page_views
-from articles join log
-on log.path = concat('/article/', articles.slug)
-where status !='404 NOT FOUND'
-group by articles.author 
-order by page_views desc;
-```
+<img src="http://i.imgur.com/bMHcWN9.gif" width="270">
 
-```
-create view All_Requests2 as
-select time ::timestamp::date as date, count(*) as total_requests
-from log
-group by date
-order by total_requests desc;
-```
+## Project 3: [Create a Movie Website](https://github.com/benjiehan/intro-to-programming-nanodegree/tree/master/MovieWebsiteProject)
+### Make a movie website using the concept of classes in Python as well as your understanding of HTML and CSS.
+This website displays an interactive list of movie posters that plays trailers on Youtube when clicked. 
 
-```
-create view All_Errors2 as
-select time ::timestamp::date as date, count(*) as requests_failures
-from log
-where status = '404 NOT FOUND'
-group by date
-order by requests_failures desc;
-```
+<img src="http://i.imgur.com/ue9SPwk.gif" width="270">
 
-```
-create view daily_error_number2 as
-select All_Errors2.date,
-cast(All_Errors2.requests_failures as decimal) / cast(All_Requests2.total_requests as decimal) as daily_error
-from All_Requests2 join All_Errors2
-on All_Requests2.date = All_Errors2.date
-order by daily_error desc;
-```
+## Project 4: [Logs Analysis](https://github.com/benjiehan/intro-to-programming-nanodegree/tree/master/LogsAnalysisProject)
+### Practice you SQL skills by building a reporting tool that summarizes data from a large database.
+This code extracts the three most popular articles of all time, the most popular authors of all time, and which days did more than 1% of requests lead to errors.
 
-```
-create view daily_error_percentage_table as
-select date,
-round(100 * (daily_error), 2) as daily_error_percentage
-from daily_error_number2
-order by daily_error_percentage desc limit 5;
-```
+<img src="http://i.imgur.com/WkZt3A7.gif" width="270">
 
-## Pulling the report
-  * After the views have been created, press CTRL + Z to exit the database. Input 'python run_queries.py' to run the script.
-  * The python file `run_queries.py` executes 3 functions, printing out the answers onto the terminal.
